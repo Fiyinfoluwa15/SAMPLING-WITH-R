@@ -1,0 +1,89 @@
+---
+title: "SAMPLING WITH IRIS"
+output:
+  word_document: default
+  html_document: default
+date: "2023-01-20"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Sampling
+```{r}
+iris_df <- iris
+set.seed(1000)
+names(iris_df)
+N<- nrow(iris_df) # population size
+n <- 100 # sample size
+```
+Simple random sampling (srs)
+
+```{r}
+iris_srs <- iris_df[sample(nrow(iris_df), 100),]
+summary(iris_srs)
+```
+```{r}
+var(iris_srs)
+```
+
+```{r}
+varSepal.Length <- var(iris_srs$Sepal.Length) 
+varSepal.Length
+```
+
+```{r}
+var(iris_srs$Sepal.Width)
+var(iris_srs$Petal.Length) 
+var(iris_srs$Petal.Width)
+```
+
+Confidence interval
+
+```{r}
+z <- 1.96
+f <- n/N 
+margin <- z*sqrt(varSepal.Length*(1-f)/n)
+margin
+```
+
+```{r}
+CISepal.Length_lower <- mean(iris_srs$Sepal.Length) - margin
+CISepal.Lengt_higher<- mean(iris_srs$Sepal.Length) + margin
+CI_Sepal.Length <- c(CISepal.Length_lower, CISepal.Lengt_higher)
+CI_Sepal.Length
+```
+
+Unrestricted random sampling (urs)
+
+```{r}
+iris_urs <- iris_df[sample(nrow(iris_df), 100, replace = TRUE),]
+summary(iris_urs)
+```
+
+```{r}
+varSepal.LengthURS <- var(iris_urs$Sepal.Length) 
+varSepal.LengthURS
+```
+
+```{r}
+var(iris_urs$Sepal.Width)
+var(iris_urs$Petal.Length) 
+var(iris_urs$Petal.Width)
+```
+
+```{r}
+z <- 1.96
+f <- n/N 
+margin <- z*sqrt(varSepal.LengthURS/n)
+margin
+```
+
+```{r}
+CISepal.Length_lower <- mean(iris_urs$Sepal.Length) - margin
+CISepal.Length_higher<- mean(iris_urs$Sepal.Length) + margin
+CI_Sepal.Length <- c(CISepal.Length_lower, CISepal.Length_higher)
+CI_Sepal.Length
+```
+
